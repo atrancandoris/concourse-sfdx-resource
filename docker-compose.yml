@@ -1,10 +1,12 @@
 version: "3"
 services:
+  #This file is an example for local testing
   cci-shell:
     image: cci
     entrypoint: /bin/bash
     volumes:
-      - ~/.cumulusci/cci-cha-atran.org:/root/.cumulusci/cci-cha-atran.org
-      - ~/gh/concourse-sfdx-resource:/root
+      - ~/gh/concourse-sfdx-resource:/root/test
+      - ~/gh/cci-cha:/root/cha
+      - ~/.cumulusci/cci-cha:/root/org_dir
     environment:
-      CUMULUSCI_KEY: GDEPFeeFmz5XrGAi
+      CUMULUSCI_KEY: <key>

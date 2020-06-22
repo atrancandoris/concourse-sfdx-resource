@@ -1,9 +1,6 @@
 #!/bin/bash
 
-
-##TODO REMOVE
-cd ~/gh/concourse-sfdx-resource
-##
+# Below is some standard resource type scaffolding. 'source' and 'payload' will be json objects which can be read with jq.
 
 set -e
 set -o pipefail
@@ -12,37 +9,35 @@ exec 3>&1 # make stdout available as fd 3 for the result
 exec 1>&2 # redirect all output to stderr for logging
 
 # Read inputs
-source=$1
+
+cd $1
 payload=$(mktemp /tmp/resource-in.XXXXXX)
 
 cat > $payload <&0
 
-# cd $source
+# Get options
 
-CUMULUSCI_KEY=$(jq -r '.params.cumulus_ci_key' < $payload)
-HUB_USERNAME=$(jq -r '.params.hub_username' < $payload)
-PACKAGE_KEY=$(jq -r '.params.package_key' < $payload)
-PACKAGE_NAME=$(jq -r '.params.package_name' < $payload)
-PACKAGE_DIRECTORY=$(jq -r '.params.package_directory' < $payload)
-jq -r '.params.jwtkey' < $payload > server.key
+export CUMULUSCI_KEY=$(jq -r '.source.cumulusci_key' < $payload)
+ORG_DIR=$(jq -r '.params.org_dir' < $payload)
+PROJECT_NAME=$(jq -r '.params.project_name' < $payload)
+PROJECT_DIR=$(jq -r '.params.project_dir' < $payload)
+COMMAND=$(jq -r '.params.command' < $payload)
+ARGS=$(jq -r '.params.args' < $payload)
 
-cp $(jq -r '.params.org_dir')/* /root/.cumulusci
+# Copy directories
+
+mkdir -p /root/.cumulusci/$PROJECT_NAME
+cp -R $ORG_DIR/* /root/.cumulusci/$PROJECT_NAME
+cp -R $PROJECT_DIR /tmp/project
 
 # Command
 
-# sfdx force:auth:jwt:grant --clientid ${CONSUMER_KEY} --username ${HUB_USERNAME} --jwtkeyfile server.key --setdefaultdevhubusername
-
-mkdir -p ./tmp
-# cp -r ~/gh/salesforce-filtered-related-lists/* ./tmp
-cd tmp
-
-sfdx force:config:set defaultusername=${HUB_USERNAME}
-
-CONSUMER_KEY=$(jq -r '.params.consumer_key' < $payload)
-sfdx force:package:version:create -p "${PACKAGE_NAME}" -d ${PACKAGE_DIRECTORY} -k ${PACKAGE_KEY}
+cd /tmp/project
+cci $COMMAND $ARGS
 
 # Results
 
-release=1
-result="$(jq -n "{version:{release:\"$release\", deleted: \"true\"}, metadata: [{name: \"release\", value: \"$release\"}]}")"
-echo "$result" | jq -s add >&3
+jq -n "{
+  version: {},
+  metadata: [{}]
+}" >&3

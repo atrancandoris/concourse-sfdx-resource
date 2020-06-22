@@ -1,8 +1,9 @@
 {
   "params": {
-    "cumulusci_key": "GDEPFeeFmz5XrGAi",
-    "org_dir": "~/.cumulusci",
-    "task": "org_settings",
-    "org": "cci-cha-atran.org"
+    "org_dir": "/root/org_dir",
+    "project_name": "cci-cha",
+    "project_dir": "/root/cha",
+    "command": "task",
+    "args": "run dx_deploy --org atran"
   }
 }
