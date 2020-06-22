@@ -1,0 +1,8 @@
+{
+  "params": {
+    "cumulusci_key": "GDEPFeeFmz5XrGAi",
+    "org_dir": "~/.cumulusci",
+    "task": "org_settings",
+    "org": "cci-cha-atran.org"
+  }
+}

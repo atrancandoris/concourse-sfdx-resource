@@ -1,0 +1,10 @@
+version: "3"
+services:
+  cci-shell:
+    image: cci
+    entrypoint: /bin/bash
+    volumes:
+      - ~/.cumulusci/cci-cha-atran.org:/root/.cumulusci/cci-cha-atran.org
+      - ~/gh/concourse-sfdx-resource:/root
+    environment:
+      CUMULUSCI_KEY: GDEPFeeFmz5XrGAi
