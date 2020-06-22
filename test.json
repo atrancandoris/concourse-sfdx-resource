@@ -1,4 +1,7 @@
 {
+  "source": {
+    "cumulusci_key": "<your key>"
+  },
   "params": {
     "org_dir": "/root/org_dir",
     "project_name": "cci-cha",

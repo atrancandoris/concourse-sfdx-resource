@@ -1,5 +1,7 @@
 # Readme
 
+## Instructions
+
 Build this resource type:
 
 ```
@@ -55,4 +57,20 @@ jobs:
 ```
 cci org connect <org name> [--sandbox]
 cp ~/.cumulusci/<project name>/<org name>.org <local org dir in repo>
+```
+
+## Local Development
+
+1. Modify directories in `docker-compose.yml`
+2. Run:
+
+```
+docker-compose run cci-shell
+```
+
+3. Execute:
+
+```
+cd /root/test
+assets/out < test.json
 ```
